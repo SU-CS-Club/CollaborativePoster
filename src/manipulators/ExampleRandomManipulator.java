@@ -3,6 +3,11 @@ package manipulators;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * Example Manipulator that fills whitespace with yellow, cyan, or pink randomly
+ *
+ * Author: Maxx Batterton
+ */
 public class ExampleRandomManipulator extends Manipulator {
     @Override
     public Color getColorAtPoint(int x, int y, float brightness, Random random) {

@@ -3,6 +3,11 @@ package manipulators;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * Example Manipulator that colors the image blue based on brightness
+ *
+ * Author: Maxx Batterton
+ */
 public class ExampleBluifierManipulator extends Manipulator {
 
     @Override

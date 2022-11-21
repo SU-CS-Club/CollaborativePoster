@@ -6,18 +6,47 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Scanner;
 
 public class PosterMain {
 
-    public static void main(String[] args) throws IOException {
-        String imagePath = "src/imagesources/test_image.png";
-        BufferedImage image = ImageIO.read(new File(imagePath));
+    public static void main(String[] args) {
+        String[] classes = new String[]{};
+        BufferedImage image;
+        try {
+            String imagePath = "src/imagesources/test_image.png";
+            image = ImageIO.read(new File(imagePath));
 
-        Manipulator[] manipulators = new Manipulator[] {
-                new ExampleBluifierManipulator(),
-                new ExampleGradientManipulator(),
-                new ExampleRandomManipulator()
-        };
+            Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources("manipulators/");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+
+                    classes = new Scanner((InputStream) url.getContent()).useDelimiter("\\A").next().split("\n");
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Manipulator[] manipulators = new Manipulator[classes.length-1];
+        int place = 0;
+        for (String classname : classes) {
+            if (!classname.equals("Manipulator.class")) {
+                try {
+                    manipulators[place] = (Manipulator) Class.forName("manipulators."+classname.replace(".class", "")).getConstructors()[0].newInstance();
+                    System.out.printf("Added \"%s\"\n", classname);
+                    place++;
+                } catch (Exception e) {
+                    System.out.printf("Failed to add \"%s\"\n", classname);
+                }
+            }
+
+        }
 
 
         JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulators);

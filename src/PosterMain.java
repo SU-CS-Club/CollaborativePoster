@@ -1,6 +1,4 @@
-import manipulators.ExampleBluifierManipulator;
-import manipulators.ExampleGradientManipulator;
-import manipulators.Manipulator;
+import manipulators.*;
 import util.DisplayPanel;
 
 import javax.imageio.ImageIO;
@@ -17,7 +15,8 @@ public class PosterMain {
 
         Manipulator[] manipulators = new Manipulator[] {
                 new ExampleBluifierManipulator(),
-                new ExampleGradientManipulator()
+                new ExampleGradientManipulator(),
+                new ExampleRandomManipulator()
         };
 
 

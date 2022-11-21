@@ -38,7 +38,10 @@ public class DisplayPanel extends JPanel {
             controlPanel.add(dropDown, 0);
 
             randomizeButton = new JButton("Generate New Random");
-            randomizeButton.addActionListener(e -> random = new Random());
+            randomizeButton.addActionListener(e -> {
+                random = new Random();
+                updateImage();
+            });
             controlPanel.add(randomizeButton);
         }
         add(controlPanel);

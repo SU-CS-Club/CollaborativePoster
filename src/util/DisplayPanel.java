@@ -4,10 +4,6 @@ import manipulators.Manipulator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -16,10 +12,10 @@ public class DisplayPanel extends JPanel {
     private final BufferedImage sourceImage;
     private Random random;
     
-    private JComboBox<Manipulator> dropDown;
-    private JButton randomizeButton;
-    private JLabel oldpicLabel;
-    private JLabel newPicLabel;
+    private final JComboBox<Manipulator> dropDown;
+    private final JButton randomizeButton;
+    private final JLabel oldpicLabel;
+    private final JLabel newPicLabel;
 
     public DisplayPanel(BufferedImage sourceImage, Manipulator[] manipulators) {
         this.sourceImage = sourceImage;

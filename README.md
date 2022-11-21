@@ -1,4 +1,4 @@
-# CollaborativePoster
+# SU CS Club Collaborative Poster
 
 This is an experiment to work on a collaborative CS Club poster.
 
@@ -12,5 +12,7 @@ The dropdown specifies what Manipulator to use, and the effect is shown on the t
 The left image is the input, and the right image is the processed version.
 
 The "Generate New Random" button will generate a new random seed and regenerate the image. If your manipulator uses randomness, this will allow you view different possible outcomes.
+
+
 
 I will update this README as more features are added.

@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Example Manipulator that fills whitespace with yellow, cyan, or pink randomly
  *
- * Author: Maxx Batterton
+ * @author Maxx Batterton
  */
 public class ExampleRandomManipulator extends Manipulator {
     @Override

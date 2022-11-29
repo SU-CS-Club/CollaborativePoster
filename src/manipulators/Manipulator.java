@@ -6,6 +6,22 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+/**
+ * Base Manipulator class that specifies 2 methods:
+ * One that manipulates each pixel of an image, which
+ * generally is the one to modify in an extended class.
+ *
+ * Change that method to specify what your manipulator
+ * should do at each pixel!
+ *
+ * If your manipulator needs to be more complex, you can
+ * also modify the transformImage method which specifies
+ * the order which pixels are changed, and can let you
+ * do batches of pixels or more complex patterns that
+ * consider neighboring pixels or the image as a whole
+ *
+ * @author Maxx Batterton
+ */
 public abstract class Manipulator {
 
     // instance of the image being processed, saved for easy access in getColorAtPoint()

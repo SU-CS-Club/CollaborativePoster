@@ -7,6 +7,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+/**
+ * Class laying out the GUI to display images with
+ * the manipulator selector and randomizer.
+ *
+ * @author Maxx Batterton
+ */
 public class DisplayPanel extends JPanel {
 
     private final BufferedImage sourceImage;

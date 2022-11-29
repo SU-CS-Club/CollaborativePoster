@@ -12,8 +12,15 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
+/**
+ * Main class that does the set up work
+ * to create the GUI, load the images and
+ * manipulators. Should be the main method
+ * that you run.
+ *
+ * @author Maxx Batterton
+ */
 public class PosterMain {
 
     public static void main(String[] args) {

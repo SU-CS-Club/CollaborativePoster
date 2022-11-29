@@ -7,9 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class PosterMain {
 
@@ -31,23 +34,23 @@ public class PosterMain {
             throw new RuntimeException(e);
         }
 
-        Manipulator[] manipulators = new Manipulator[classes.length-1];
-        int place = 0;
+        LinkedList<Manipulator> manipulators = new LinkedList<>();
         for (String classname : classes) {
-            if (!classname.equals("Manipulator.class")) {
-                try {
-                    manipulators[place] = (Manipulator) Class.forName("manipulators."+classname.replace(".class", "")).getConstructors()[0].newInstance();
+            try {
+                Class<?> targetClass = Class.forName("manipulators." + classname.replace(".class", ""));
+                if (Modifier.isAbstract(targetClass.getModifiers())) {
+                    System.out.printf("Skipped abstract \"%s\"\n", classname);
+                } else {
+                    manipulators.add((Manipulator) targetClass.getConstructors()[0].newInstance());
                     System.out.printf("Added \"%s\"\n", classname);
-                    place++;
-                } catch (Exception e) {
-                    System.out.printf("Failed to add \"%s\"\n", classname);
                 }
+            } catch (Exception e) {
+                System.out.printf("Failed to add \"%s\"\n", classname);
             }
-
         }
 
-
-        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulators);
+       Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
+        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
         frame.setVisible(true);
     }
 

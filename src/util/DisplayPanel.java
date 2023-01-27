@@ -4,7 +4,12 @@ import manipulators.Manipulator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -59,6 +64,8 @@ public class DisplayPanel extends JPanel {
         }
         add(imagePanel);
         updateImage();
+
+        loadData(manipulators);
     }
 
     private void updateImage() {
@@ -67,13 +74,40 @@ public class DisplayPanel extends JPanel {
         newPicLabel.setIcon(new ImageIcon(newImage.getScaledInstance(300, 300, Image.SCALE_SMOOTH)));
     }
 
+    public void saveData() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("lastSelected", dropDown.getSelectedItem());
+        ConfigUtil.saveToFile(data);
+    }
+
+    public void loadData(Manipulator[] manipulators) {
+        Map<String, String> data = ConfigUtil.readFromFile();
+        if (data == null) return;
+
+        if (data.containsKey("lastSelected")) {
+            dropDown.setSelectedItem(Arrays.stream(manipulators).filter(manipulator -> manipulator.getClass().getName().equals(data.get("lastSelected"))).findFirst().get());
+        }
+
+        // Extensible here
+    }
+
     public static JFrame createSimpleJFrame(BufferedImage sourceImage, Manipulator[] manipulators) {
         JFrame frame = new JFrame("panel");
 
-        frame.add(new DisplayPanel(sourceImage, manipulators));
+        DisplayPanel main = new DisplayPanel(sourceImage, manipulators);
+        frame.add(main);
 
         frame.setSize(700, 450);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                main.saveData();
+            }
+        });
         return frame;
     }
+
 }

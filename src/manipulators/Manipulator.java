@@ -65,4 +65,9 @@ public abstract class Manipulator {
         }
         return modified;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }

@@ -1,4 +1,5 @@
 import manipulators.*;
+import util.ConfigUtil;
 import util.DisplayPanel;
 
 import javax.imageio.ImageIO;
@@ -9,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Main class that does the set up work
@@ -56,7 +55,7 @@ public class PosterMain {
             }
         }
 
-       Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
+        Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
         JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
         frame.setVisible(true);
     }

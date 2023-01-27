@@ -8,6 +8,13 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Helper class to handle file IO for saving the state
+ * of the program. Probably could be written better, but
+ * it gets the job done.
+ *
+ * @author Maxx Batterton
+ */
 public class ConfigUtil {
 
     public static void saveToFile(Map<String, Object> data) {

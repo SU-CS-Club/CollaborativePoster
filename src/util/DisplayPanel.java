@@ -7,10 +7,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+
+import static util.ConfigUtil.CONFIG;
 
 /**
  * Class laying out the GUI to display images with
@@ -25,6 +24,7 @@ public class DisplayPanel extends JPanel {
     
     private final JComboBox<Manipulator> dropDown;
     private final JButton randomizeButton;
+    private final JButton previewButton;
     private final JLabel oldpicLabel;
     private final JLabel newPicLabel;
 
@@ -50,6 +50,12 @@ public class DisplayPanel extends JPanel {
                 updateImage();
             });
             controlPanel.add(randomizeButton);
+
+            previewButton = new JButton("Preview Big Image");
+            previewButton.addActionListener(e -> {
+
+            });
+            controlPanel.add(previewButton);
         }
         add(controlPanel);
 
@@ -63,29 +69,24 @@ public class DisplayPanel extends JPanel {
             imagePanel.add(newPicLabel);
         }
         add(imagePanel);
-        updateImage();
-
         loadData(manipulators);
+
+        updateImage();
     }
 
     private void updateImage() {
         Manipulator selected = (Manipulator) dropDown.getSelectedItem();
+        CONFIG.put("lastSelected", dropDown.getSelectedItem().toString());
         BufferedImage newImage = selected.transformImage(sourceImage, random);
         newPicLabel.setIcon(new ImageIcon(newImage.getScaledInstance(300, 300, Image.SCALE_SMOOTH)));
     }
 
-    public void saveData() {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("lastSelected", dropDown.getSelectedItem());
-        ConfigUtil.saveToFile(data);
-    }
-
     public void loadData(Manipulator[] manipulators) {
-        Map<String, String> data = ConfigUtil.readFromFile();
-        if (data == null) return;
-
-        if (data.containsKey("lastSelected")) {
-            dropDown.setSelectedItem(Arrays.stream(manipulators).filter(manipulator -> manipulator.getClass().getName().equals(data.get("lastSelected"))).findFirst().get());
+        if (CONFIG.containsKey("lastSelected")) {
+            Optional<Manipulator> m = Arrays.stream(manipulators).filter(manipulator -> manipulator.getClass().getName().equals("manipulators."+ CONFIG.get("lastSelected"))).findFirst();
+            if (m.isPresent()) {
+                dropDown.setSelectedItem(m.get());
+            }
         }
 
         // Extensible here
@@ -104,7 +105,7 @@ public class DisplayPanel extends JPanel {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                main.saveData();
+                ConfigUtil.saveToFile();
             }
         });
         return frame;

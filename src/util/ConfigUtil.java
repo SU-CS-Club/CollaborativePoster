@@ -17,15 +17,17 @@ import java.util.Map;
  */
 public class ConfigUtil {
 
-    public static void saveToFile(Map<String, Object> data) {
+    public static Map<String, String> CONFIG = ConfigUtil.readFromFile();
+
+    public static void saveToFile() {
         try {
             Path configPath = FileSystems.getDefault().getPath("poster.cfg");
             if (!Files.exists(configPath)) {
                 Files.createFile(configPath);
             }
             BufferedWriter stream = Files.newBufferedWriter(configPath, StandardOpenOption.TRUNCATE_EXISTING);
-            for (String key : data.keySet()) {
-                stream.write(key + ":" + data.get(key));
+            for (String key : CONFIG.keySet()) {
+                stream.write(key + ":" + CONFIG.get(key) + "\n");
             }
             stream.close();
             System.out.println("Config was saved with no errors.");

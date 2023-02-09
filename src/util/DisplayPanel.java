@@ -42,7 +42,7 @@ public class DisplayPanel extends JPanel {
                 dropDown.addItem(m);
             }
             dropDown.addItemListener(e -> updateImage());
-            controlPanel.add(dropDown, 0);
+            controlPanel.add(dropDown);
 
             randomizeButton = new JButton("Generate New Random");
             randomizeButton.addActionListener(e -> {
@@ -53,9 +53,23 @@ public class DisplayPanel extends JPanel {
 
             previewButton = new JButton("Preview Big Image");
             previewButton.addActionListener(e -> {
-
+                PreviewPanel.createSimpleJFrame(
+                        manipulators,
+                        new WindowAdapter() {
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+                                super.windowClosing(e);
+                                dropDown.setEnabled(true);
+                                randomizeButton.setEnabled(true);
+                                previewButton.setEnabled(true);
+                            }
+                        });
+                dropDown.setEnabled(false);
+                randomizeButton.setEnabled(false);
+                previewButton.setEnabled(false);
             });
             controlPanel.add(previewButton);
+            previewButton.setEnabled(false); // TODO!
         }
         add(controlPanel);
 
@@ -91,7 +105,7 @@ public class DisplayPanel extends JPanel {
     }
 
     public static JFrame createSimpleJFrame(BufferedImage sourceImage, Manipulator[] manipulators) {
-        JFrame frame = new JFrame("panel");
+        JFrame frame = new JFrame("Display Panel");
 
         DisplayPanel main = new DisplayPanel(sourceImage, manipulators);
         frame.add(main);
@@ -106,6 +120,7 @@ public class DisplayPanel extends JPanel {
                 ConfigUtil.saveToFile();
             }
         });
+        frame.setVisible(true);
         return frame;
     }
 

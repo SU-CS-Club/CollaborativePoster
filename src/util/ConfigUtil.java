@@ -64,6 +64,7 @@ public class ConfigUtil {
         HashMap<String, String> data = new HashMap<>();
         data.putIfAbsent("displayImage", "src/imagesources/test_image.png");
         data.putIfAbsent("lastSelected", "CSClubLogoManipulator");
+        data.putIfAbsent("previewImage", "src/imagesources/su_crest.png");
         return data;
     }
 

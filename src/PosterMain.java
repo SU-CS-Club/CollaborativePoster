@@ -58,7 +58,6 @@ public class PosterMain {
 
         Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
         JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
-        frame.setVisible(true);
     }
 
 }

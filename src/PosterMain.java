@@ -27,14 +27,7 @@ public class PosterMain {
         String[] classes = new String[]{};
         BufferedImage image;
         try {
-            String imagePath;
-            if (!CONFIG.containsKey("displayImage")) {
-                CONFIG.put("displayImage", "src/imagesources/test_image.png");
-            }
-            imagePath = CONFIG.get("displayImage");
-
-            System.out.println(imagePath);
-            System.out.println(new File(imagePath).exists());
+            String imagePath = CONFIG.get("displayImage");
             image = ImageIO.read(new File(imagePath));
 
             Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources("manipulators/");

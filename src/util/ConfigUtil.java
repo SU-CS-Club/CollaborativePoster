@@ -35,9 +35,9 @@ public class ConfigUtil {
             throw new RuntimeException(e);
         }
     }
-    public static Map<String, String> readFromFile() {
+    private static Map<String, String> readFromFile() {
         Path configPath = FileSystems.getDefault().getPath("poster.cfg");
-        HashMap<String, String> data = new HashMap<>();
+        HashMap<String, String> data = defaults();
         if (Files.exists(configPath)) {
             try {
                 BufferedReader reader = Files.newBufferedReader(configPath);
@@ -52,12 +52,19 @@ public class ConfigUtil {
                 return data;
             } catch (Exception e) {
                 System.out.println("Config was corrupt, proceeding with default values.");
-                return new HashMap<>();
+                return data;
             }
         } else {
             System.out.println("No config found, proceeding with default values.");
             return data;
         }
+    }
+
+    private static HashMap<String, String> defaults() {
+        HashMap<String, String> data = new HashMap<>();
+        data.putIfAbsent("displayImage", "src/imagesources/test_image.png");
+        data.putIfAbsent("lastSelected", "CSClubLogoManipulator");
+        return data;
     }
 
 }

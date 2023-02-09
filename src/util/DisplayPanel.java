@@ -82,11 +82,9 @@ public class DisplayPanel extends JPanel {
     }
 
     public void loadData(Manipulator[] manipulators) {
-        if (CONFIG.containsKey("lastSelected")) {
-            Optional<Manipulator> m = Arrays.stream(manipulators).filter(manipulator -> manipulator.getClass().getName().equals("manipulators."+ CONFIG.get("lastSelected"))).findFirst();
-            if (m.isPresent()) {
-                dropDown.setSelectedItem(m.get());
-            }
+        Optional<Manipulator> m = Arrays.stream(manipulators).filter(manipulator -> manipulator.getClass().getName().equals("manipulators."+ CONFIG.get("lastSelected"))).findFirst();
+        if (m.isPresent()) {
+            dropDown.setSelectedItem(m.get());
         }
 
         // Extensible here

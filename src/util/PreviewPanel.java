@@ -10,19 +10,35 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Arrays;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Random;
 
 import static util.ConfigUtil.CONFIG;
 
+/**
+ * Class laying out the GUI to preview images built
+ * with multiple manipulators. Breaks up an image into
+ * a set number of columns and rows, manipulates
+ * each section, and displays it. Also allows exporting
+ * the image as a file.
+ *
+ * @author Maxx Batterton
+ */
 public class PreviewPanel extends JPanel {
 
     private final BufferedImage sourceImage;
+    private BufferedImage modifiedImage;
     private final JLabel bigPicLabel;
     private final JTextField heightField;
     private final JTextField widthField;
+    private final JButton saveButton;
 
-    private boolean[] enabled;
+    private final boolean[] enabled;
 
     public PreviewPanel(BufferedImage sourceImage, Manipulator[] manipulators) {
         this.sourceImage = sourceImage;
@@ -93,6 +109,12 @@ public class PreviewPanel extends JPanel {
                     }
                 });
                 sizePanel.add(widthField);
+                JPanel spacer = new JPanel();
+                spacer.setPreferredSize(new Dimension(20, 0));
+                sizePanel.add(spacer);
+                saveButton = new JButton("Save Image");
+                saveButton.addActionListener(e -> ImageUtil.saveOutputFile(modifiedImage));
+                sizePanel.add(saveButton);
             }
             rightPanel.add(sizePanel);
 
@@ -104,9 +126,7 @@ public class PreviewPanel extends JPanel {
                     item.setPreferredSize(new Dimension(300, 20));
                     item.setState(true);
                     int itemID = i;
-                    item.addActionListener(e -> {
-                        updateImage(itemID, item.getState(), manipulators);
-                    });
+                    item.addActionListener(e -> updateImage(itemID, item.getState(), manipulators));
                     enabled[i] = true;
                     manipulatorPanel.add(item);
                 }
@@ -131,6 +151,9 @@ public class PreviewPanel extends JPanel {
 
         PreviewPanel main = new PreviewPanel(image, manipulators);
         frame.add(main);
+
+        ImageIcon appIcon = new ImageIcon("appicon.png");
+        frame.setIconImage(appIcon.getImage());
 
         frame.setSize(1000, 700);
 
@@ -167,7 +190,7 @@ public class PreviewPanel extends JPanel {
                 filled++;
             }
 
-            BufferedImage modifiedImage = ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
+            modifiedImage = ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
 
             bigPicLabel.setIcon(new ImageIcon(modifiedImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
         } else {

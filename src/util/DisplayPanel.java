@@ -112,6 +112,9 @@ public class DisplayPanel extends JPanel {
         frame.setSize(700, 450);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        ImageIcon appIcon = new ImageIcon("appicon.png");
+        frame.setIconImage(appIcon.getImage());
+
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

@@ -1,8 +1,11 @@
 import manipulators.*;
+import util.ConfigUtil;
 import util.DisplayPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

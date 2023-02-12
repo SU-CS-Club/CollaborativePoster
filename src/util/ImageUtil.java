@@ -4,7 +4,19 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
 
+/**
+ * Helper class to handle the image manipulation
+ * required to create the mosaic poster (image
+ * splitting and merging). Was a lot of code that
+ * didn't need to be in the PreviewPanel class.
+ *
+ * @author Maxx Batterton
+ */
 public class ImageUtil {
 
     public static BufferedImage[] splitImage(BufferedImage originalImage, int rows, int columns) {
@@ -57,5 +69,20 @@ public class ImageUtil {
         }
 
         return mergedImage;
+    }
+
+    public static void saveOutputFile(BufferedImage image) {
+        try {
+            Path outputPath = Path.of("output");
+            if (!Files.exists(outputPath)) Files.createDirectory(outputPath);
+            File outputFile = new File("output/poster_output "+getFileSafeDate()+".jpg");
+            ImageIO.write(image, "jpg", outputFile);
+        } catch (IOException ignored) {
+            System.out.println(ignored);
+        }
+    }
+
+    public static String getFileSafeDate() {
+        return LocalDateTime.now().toString().split("\\.")[0].replace(":", "-").replace("T", " ");
     }
 }

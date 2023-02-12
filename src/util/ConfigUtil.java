@@ -10,8 +10,9 @@ import java.util.Map;
 
 /**
  * Helper class to handle file IO for saving the state
- * of the program. Probably could be written better, but
- * it gets the job done.
+ * of the program. Default configs are defined in the
+ * defaults() method, otherwise config can be accessed
+ * from any class through the CONFIG variable
  *
  * @author Maxx Batterton
  */
@@ -62,9 +63,11 @@ public class ConfigUtil {
 
     private static HashMap<String, String> defaults() {
         HashMap<String, String> data = new HashMap<>();
-        data.putIfAbsent("displayImage", "src/imagesources/test_image.png");
         data.putIfAbsent("lastSelected", "CSClubLogoManipulator");
+        data.putIfAbsent("displayImage", "src/imagesources/test_image.png");
         data.putIfAbsent("previewImage", "src/imagesources/su_crest.png");
+        data.putIfAbsent("previewHeight", "6");
+        data.putIfAbsent("previewWidth", "6");
         return data;
     }
 

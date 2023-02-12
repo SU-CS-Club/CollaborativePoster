@@ -69,7 +69,6 @@ public class DisplayPanel extends JPanel {
                 previewButton.setEnabled(false);
             });
             controlPanel.add(previewButton);
-            previewButton.setEnabled(false); // TODO!
         }
         add(controlPanel);
 

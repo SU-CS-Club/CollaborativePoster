@@ -37,4 +37,6 @@ To add your Manipulator to the project, you should [fork](https://docs.github.co
 
 If you need assistance with code or GitHub or have any questions about anything, ask them in the [CS Club Discord](https://discord.gg/629fkuKAC3) in the "#collaborative-poster" channel, and someone will be able to help you.
 
+If you come across a bug, crash, or error in the program, or would like to suggest a feature in the program, make an issue at [this link](https://github.com/SU-CS-Club/CollaborativePoster/issues/new)!
+
 I will be updating this README as more features are added.

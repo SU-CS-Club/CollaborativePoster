@@ -4,13 +4,20 @@ This is an experiment to work on a collaborative CS Club poster.
 
 The goal is to have a large amount of students contribute a "Manipulator" to the project, and with enough submissions, a poster can be divided up into sections and each student will have their code affecting a small part of a larger CS poster, creating a mosaic somewhat like a digital collaborative quilt.
 
-## How to get started
+## How to get started using a terminal without graphics support (like GitHub codespaces)
 
-Running the PosterMain class will open a simple GUI to test every Manipulator. 
+This approach provides fewer options and interactivity than what is shown below, but you can still participate.
+Simply run the class `PosterMain` and a file `poster.jpg` will be created in your project directory that you can view.
+This will be created using all available manipulators with default configurations. For instructions on adding
+new Manipulator classes, see below.
+
+## How to get started using an IDE on your personal machine
+
+Running the `PosterMain` class will open a simple GUI to test every Manipulator. 
 
 ![image](https://user-images.githubusercontent.com/53229958/218334434-55e5594f-c946-46f8-ae6b-273463130594.png)
 
-To make your own Manipulator, simply create a new class file in the src/manipulators directory which extends the abstract Manipulator (If you need to, take a look at the example files in that same directory). Once created, your Manipulator will be automatically detected and show up in the dropdown when you run PosterMain.
+To make your own Manipulator, simply create a new class file in the `src/manipulators` directory which extends the abstract Manipulator (If you need to, take a look at the example files in that same directory). Once created, your `Manipulator` will be automatically detected and show up in the dropdown when you run `PosterMain`.
 
 ### The Display Panel
 ![image](https://user-images.githubusercontent.com/53229958/218334450-17a744af-281c-47f9-beac-3116674e30c5.png)

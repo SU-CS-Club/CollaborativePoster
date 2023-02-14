@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Example Manipulator that fills the screen with a simple cyan to red gradient
  *
- * Author: Maxx Batterton
+ * @author Maxx Batterton
  */
 public class ExampleGradientManipulator extends Manipulator {
 

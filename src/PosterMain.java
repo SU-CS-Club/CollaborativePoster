@@ -1,23 +1,36 @@
 import manipulators.*;
+import util.ConfigUtil;
 import util.DisplayPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.Scanner;
+import java.util.*;
 
+import static util.ConfigUtil.CONFIG;
+
+/**
+ * Main class that does the set up work
+ * to create the GUI, load the images and
+ * manipulators. Should be the main method
+ * that you run.
+ *
+ * @author Maxx Batterton
+ */
 public class PosterMain {
 
     public static void main(String[] args) {
         String[] classes = new String[]{};
         BufferedImage image;
         try {
-            String imagePath = "src/imagesources/test_image.png";
+            String imagePath = CONFIG.get("displayImage");
             image = ImageIO.read(new File(imagePath));
 
             Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources("manipulators/");
@@ -31,24 +44,23 @@ public class PosterMain {
             throw new RuntimeException(e);
         }
 
-        Manipulator[] manipulators = new Manipulator[classes.length-1];
-        int place = 0;
+        LinkedList<Manipulator> manipulators = new LinkedList<>();
         for (String classname : classes) {
-            if (!classname.equals("Manipulator.class")) {
-                try {
-                    manipulators[place] = (Manipulator) Class.forName("manipulators."+classname.replace(".class", "")).getConstructors()[0].newInstance();
+            try {
+                Class<?> targetClass = Class.forName("manipulators." + classname.replace(".class", ""));
+                if (Modifier.isAbstract(targetClass.getModifiers())) {
+                    System.out.printf("Skipped abstract \"%s\"\n", classname);
+                } else {
+                    manipulators.add((Manipulator) targetClass.getConstructors()[0].newInstance());
                     System.out.printf("Added \"%s\"\n", classname);
-                    place++;
-                } catch (Exception e) {
-                    System.out.printf("Failed to add \"%s\"\n", classname);
                 }
+            } catch (Exception e) {
+                System.out.printf("Failed to add \"%s\"\n", classname);
             }
-
         }
 
-
-        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulators);
-        frame.setVisible(true);
+        Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
+        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
     }
 
 }

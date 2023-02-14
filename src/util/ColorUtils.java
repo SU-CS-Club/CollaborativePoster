@@ -2,6 +2,15 @@ package util;
 
 import java.awt.*;
 
+/**
+ * Helper class with some methods that might be useful.
+ *
+ * If you make a helper for your manipulator, think
+ * about if other people may find it useful and slap
+ * it here instead!
+ *
+ * @author Maxx Batterton
+ */
 public class ColorUtils {
 
     public static int getLuminance(Color c) {

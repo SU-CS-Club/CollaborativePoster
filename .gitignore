@@ -1,4 +1,10 @@
-out/
+
+/out/
+/.idea/
 /bin/
 .classpath
 .project
+.settings/org.eclipse.jdt.core.prefs
+poster.cfg
+/output/
+

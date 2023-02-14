@@ -176,25 +176,40 @@ public class PreviewPanel extends JPanel {
             }
         }
         if (atLeastOneSelected) {
-            int step = -1;
-            int filled = 0;
             int height = Integer.parseInt(heightField.getText());
             int width = Integer.parseInt(widthField.getText());
-            int total = height * width;
-            BufferedImage[] images = ImageUtil.splitImage(sourceImage, height, width);
-
-            while (filled < total) {
-                step = (step+1)%(enabled.length);
-                while (!enabled[step]) step = (step+1)%(enabled.length);
-                images[filled] = manipulators[step].transformImage(images[filled], new Random());
-                filled++;
-            }
-
-            modifiedImage = ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
-
+            modifiedImage = getPosterImagePreview(manipulators, enabled, sourceImage, height, width);
+            
             bigPicLabel.setIcon(new ImageIcon(modifiedImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
         } else {
             bigPicLabel.setIcon(new ImageIcon(sourceImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
         }
     }
+
+    /**
+     * Return image of whole combined poster given manipulators
+     * 
+     * @param manipulators Array of image manipulators
+     * @param enabled Whether each manipulator is enabled
+     * @param sourceImage Background image
+     * @param height Height of result
+     * @param width Width of result
+     * @return Combined poster image
+     */
+	public static BufferedImage getPosterImagePreview(Manipulator[] manipulators, boolean[] enabled, BufferedImage sourceImage, int height, int width) {
+		int step = -1;
+		int filled = 0;
+		int total = height * width;
+		BufferedImage[] images = ImageUtil.splitImage(sourceImage, height, width);
+
+		while (filled < total) {
+		    step = (step+1)%(enabled.length);
+		    while (!enabled[step]) step = (step+1)%(enabled.length);
+		    images[filled] = manipulators[step].transformImage(images[filled], new Random());
+		    filled++;
+		}
+
+		BufferedImage temp = ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
+		return temp;
+	}
 }

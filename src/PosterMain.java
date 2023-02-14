@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
+import java.awt.*;
 
 import static util.ConfigUtil.CONFIG;
 
@@ -26,7 +27,7 @@ import static util.ConfigUtil.CONFIG;
  */
 public class PosterMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String[] classes = new String[]{};
         BufferedImage image;
         try {
@@ -60,7 +61,12 @@ public class PosterMain {
         }
 
         Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
-        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
+        try {
+            JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
+        } catch(HeadlessException e) { // Will happen if no graphic environment is available.
+            ImageIO.write(image, "jpg", new File("poster.jpg"));
+            System.out.println("Could not load GUI so simply wrote poster to \"poster.jpg\"");
+        }
     }
 
 }

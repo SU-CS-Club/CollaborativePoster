@@ -1,6 +1,7 @@
 import manipulators.*;
 import util.ConfigUtil;
 import util.DisplayPanel;
+import util.PreviewPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
+import java.awt.*;
 
 import static util.ConfigUtil.CONFIG;
 
@@ -26,7 +28,7 @@ import static util.ConfigUtil.CONFIG;
  */
 public class PosterMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String[] classes = new String[]{};
         BufferedImage image;
         try {
@@ -60,7 +62,21 @@ public class PosterMain {
         }
 
         Manipulator[] manipulatorsArray = manipulators.toArray(new Manipulator[0]);
-        JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
+        try {
+            JFrame frame = DisplayPanel.createSimpleJFrame(image, manipulatorsArray);
+        } catch(HeadlessException e) { // Will happen if no graphic environment is available.
+        	boolean[] allEnabled = new boolean[manipulatorsArray.length];
+        	for(int i = 0; i < allEnabled.length; i++) allEnabled[i] = true;
+        	
+        	String imagePath = CONFIG.get("previewImage");
+            BufferedImage previewImage = ImageIO.read(new File(imagePath));
+            int height = Integer.parseInt(CONFIG.get("previewHeight"));
+            int width = Integer.parseInt(CONFIG.get("previewWidth"));
+        	
+        	BufferedImage poster = PreviewPanel.getPosterImagePreview(manipulatorsArray, allEnabled, previewImage, height, width);
+            ImageIO.write(poster, "jpg", new File("poster.jpg"));
+            System.out.println("Could not load GUI so simply wrote poster to \"poster.jpg\"");
+        }
     }
 
 }

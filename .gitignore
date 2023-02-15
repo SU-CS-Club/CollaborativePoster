@@ -1,3 +1,4 @@
+
 /out/
 /.idea/
 /bin/
@@ -6,3 +7,5 @@
 .settings/org.eclipse.jdt.core.prefs
 poster.cfg
 /output/
+
+poster.jpg

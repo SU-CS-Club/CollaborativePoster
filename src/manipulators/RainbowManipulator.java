@@ -1,18 +1,16 @@
 package manipulators;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class AidansManipulator extends Manipulator{
+public class RainbowManipulator extends Manipulator{
     int MAXCOLOR = (int) (Integer.MAX_VALUE*Math.random());
 
-    @Override
-    public Color getColorAtPoint(int x, int y, float brightness, Random random) {
-        int colorNum = MAXCOLOR/(x*y+1);
 
-        if (brightness > 0.90) {
-            return new Color(colorNum);
+    public Color getColorAtPoint(int x, int y, float brightness, Random random) {
+
+        if (brightness > 0.50) {
+            return new Color(Math.min(x*2,255), Math.max(image.getWidth() - x*2, 0), Math.min(y*2,255));
         }
         return new Color((int) (brightness * random.nextInt(255)));
         //return Color.black;

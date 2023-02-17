@@ -4,10 +4,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class AidansOtherManipulator extends ImageManipulator{
+public class NyanCatManipulator extends ImageManipulator{
 
 
-    public AidansOtherManipulator() {
+    public NyanCatManipulator() {
         super("images/Nyan_cat.png");
     }
 

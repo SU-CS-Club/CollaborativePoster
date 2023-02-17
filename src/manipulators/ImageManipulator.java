@@ -17,7 +17,7 @@ import javax.imageio.*;
  */
 public abstract class ImageManipulator extends Manipulator {
 
-	private BufferedImage sourceImage; // Image that you want to recreate
+	protected BufferedImage sourceImage; // Image that you want to recreate
 
 	/**
 	 * Given path to a specific image, load and save that file as a BuffredImage.

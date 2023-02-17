@@ -1,4 +1,5 @@
 import manipulators.*;
+import util.ConfigUtil;
 import util.DisplayPanel;
 import util.PreviewPanel;
 
@@ -77,6 +78,8 @@ public class PosterMain {
 
             BufferedImage modified = m.transformImage(previewImage, new Random());
             ImageIO.write(modified, "jpg", new File("modified.jpg"));
+            
+            ConfigUtil.saveToFile();
 
             System.out.println("Could not load GUI so simply wrote test image to \"modified.jpg\" and a poster to \"poster.jpg\"");
         }

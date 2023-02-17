@@ -7,9 +7,10 @@ The goal is to have a large amount of students contribute a "Manipulator" to the
 ## How to get started using a terminal without graphics support (like GitHub codespaces)
 
 This approach provides fewer options and interactivity than what is shown below, but you can still participate.
-Simply run the class `PosterMain` and a file `poster.jpg` will be created in your project directory that you can view.
-This will be created using all available manipulators with default configurations. For instructions on adding
-new Manipulator classes, see below.
+Simply run the class `PosterMain` and 2 files, `modified.jpg` and `poster.jpg` will be created in your project directory that you can view.
+`modified.jpg` shows the test image modified by the Manipulator defined by the lastSelected option in the poster.cfg
+`poster.jpg` shows a preview of what the poster looks like using all available manipulators with default configurations. 
+For instructions on adding a new Manipulator classes, see below.
 
 ## How to get started using an IDE on your personal machine
 

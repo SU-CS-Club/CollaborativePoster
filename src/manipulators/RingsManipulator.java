@@ -1,3 +1,10 @@
+/**
+ * Manipulator that creates a number of rings/curves that are dependent on the XY position.
+ *
+ * @author Aidan Balakrishnan
+ *
+ */
+
 package manipulators;
 
 import java.awt.*;

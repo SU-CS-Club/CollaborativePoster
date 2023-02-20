@@ -1,3 +1,9 @@
+/**
+ * Manipulator that makes all the whitespace/pixles that have a brigtness of over 0.5, into a rainbow design.
+ *
+ * @author Aidan Balakrishnan
+ *
+ */
 package manipulators;
 
 import java.awt.*;

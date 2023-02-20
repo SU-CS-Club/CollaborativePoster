@@ -1,3 +1,10 @@
+/**
+ * Manipulator that puts a nyan cat picture underneeth any black text/logo.
+ *
+ * @author Aidan Balakrishnan
+ *
+ */
+
 package manipulators;
 
 import java.awt.*;

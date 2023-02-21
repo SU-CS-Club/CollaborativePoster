@@ -48,6 +48,8 @@ The list of checkboxes will allow you to toggle on/off specific manipulators in 
 ## Contributing a Manipulator
 To add your Manipulator to the project, you should [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repository, and then [create a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request), which can then be accepted and merged.
 
+**Before you make your PR, make sure all files you're committing have an @author tag in a comment at the top of your files! Check some of the other Manipulators for examples on how to do it!**
+
 ## Extra Info
 
 If you need assistance with code or GitHub or have any questions about anything, ask them in the [CS Club Discord](https://discord.gg/629fkuKAC3) in the "#collaborative-poster" channel, and someone will be able to help you.

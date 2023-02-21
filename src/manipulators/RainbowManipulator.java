@@ -16,7 +16,7 @@ public class RainbowManipulator extends Manipulator{
     public Color getColorAtPoint(int x, int y, float brightness, Random random) {
 
         if (brightness > 0.50) {
-            return new Color(Math.min(x*2,255), Math.max(image.getWidth() - x*2, 0), Math.min(y*2,255));
+            return new Color(Math.min(x*2,255), Math.min(Math.max(image.getWidth() - x*2, 0), 255), Math.min(y*2,255));
         }
         return new Color((int) (brightness * random.nextInt(255)));
         //return Color.black;

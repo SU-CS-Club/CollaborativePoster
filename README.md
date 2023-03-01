@@ -7,9 +7,11 @@ The goal is to have a large amount of students contribute a "Manipulator" to the
 ## How to get started using a terminal without graphics support (like GitHub codespaces)
 
 This approach provides fewer options and interactivity than what is shown below, but you can still participate.
-Simply run the class `PosterMain` and a file `poster.jpg` will be created in your project directory that you can view.
-This will be created using all available manipulators with default configurations. For instructions on adding
-new Manipulator classes, see below.
+Simply run the class `PosterMain` and 2 files, `modified.jpg` and `poster.jpg` will be created in your project directory that you can view.
+* `modified.jpg` shows the test image modified by the Manipulator defined by the lastSelected option in the poster.cfg
+* `poster.jpg` shows a preview of what the poster looks like using all available manipulators with default configurations.
+ 
+For instructions on adding a new Manipulator classes, see below.
 
 ## How to get started using an IDE on your personal machine
 
@@ -18,6 +20,11 @@ Running the `PosterMain` class will open a simple GUI to test every Manipulator.
 ![image](https://user-images.githubusercontent.com/53229958/218334434-55e5594f-c946-46f8-ae6b-273463130594.png)
 
 To make your own Manipulator, simply create a new class file in the `src/manipulators` directory which extends the abstract Manipulator (If you need to, take a look at the example files in that same directory). Once created, your `Manipulator` will be automatically detected and show up in the dropdown when you run `PosterMain`.
+
+### What is a Manipulator?
+Manipulators are classes designed to manipulate the pixels of a black and white image. Each Manipulator is passed an image, and should output another image that has been processed. Simple Manipulators will only need to modify the `getColorAtPoint()` method, which modifies based on x and y coordinates. If you'd like to do a more complex pattern, you may want to override the `transformImage()` method instead, which will let you process pixels or groups of pixels in different ways than the default. 
+
+I highly encourage checking out the Manipulator class and the example classes to figure out how everything works.
 
 ### The Display Panel
 ![image](https://user-images.githubusercontent.com/53229958/218334450-17a744af-281c-47f9-beac-3116674e30c5.png)
@@ -39,6 +46,8 @@ The list of checkboxes will allow you to toggle on/off specific manipulators in 
 
 ## Contributing a Manipulator
 To add your Manipulator to the project, you should [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repository, and then [create a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request), which can then be accepted and merged.
+
+**Before you make your PR, make sure all files you're committing have an @author tag in a comment at the top of your files! Check some of the other Manipulators for examples on how to do it!**
 
 ## Extra Info
 

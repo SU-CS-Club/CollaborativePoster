@@ -1,3 +1,9 @@
+/**
+ * Manipulator that creates an explosion that dissolves some of the logo
+ * 
+ * @author Marcus Leese
+ */
+
 package manipulators;
 import java.awt.Color;
 import java.util.Random;

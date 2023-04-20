@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class MandelbrotManipulator extends Manipulator {
 
-    private static final int MAX_ITERATIONS = 200;
+    private static final int MAX_ITERATIONS = 20;
     // The range of blues to use for points outside the Mandelbrot set
     private static final Color BLUE_START_COLOR = new Color(0x0000FF);
     private static final Color BLUE_END_COLOR = new Color(0x00FFFF);

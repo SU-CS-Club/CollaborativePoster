@@ -1,5 +1,4 @@
 package manipulators;
-
 import java.awt.Color;
 import java.util.Random;
 
@@ -14,14 +13,9 @@ import java.util.Random;
 public class MandelbrotManipulator extends Manipulator {
 
     private static final int MAX_ITERATIONS = 200;
-    // Color for pixels inside the Mandelbrot set
-    private static final Color OUTSIDE_COLOR = Color.BLACK;
     // The range of blues to use for points outside the Mandelbrot set
     private static final Color BLUE_START_COLOR = new Color(0x0000FF);
     private static final Color BLUE_END_COLOR = new Color(0x00FFFF);
-    // The probability of background dots
-    private final double FILAMENT_PROBABILITY = 0.05;
-
 
     @Override
     public Color getColorAtPoint(int x, int y, float brightness, Random random) {
@@ -41,20 +35,16 @@ public class MandelbrotManipulator extends Manipulator {
         }
 
         // Fill pixel with color
-        float start = 1 - (((float) x) / image.getWidth());
+        float start = (((float) x) / image.getWidth());
         // Pixel is inside the mandelbrot set, use gradient color
         if (iterations == MAX_ITERATIONS) {
-            return interpolateColors(BLUE_START_COLOR, BLUE_END_COLOR, start);
-        } else {
-            // Create a color based on the Mandelbrot set value and the brightness of the pixel
-            if (random.nextDouble() < FILAMENT_PROBABILITY) return Color.WHITE;
-            return OUTSIDE_COLOR;
+            return interpolateColors(BLUE_START_COLOR, BLUE_END_COLOR, Math.max(0, brightness - start));
         }
+        return new Color(brightness, brightness, brightness);
     }
 
     /**
      * Interpolates between two colors by a given amount.
-     *
      * @param color1 The first color
      * @param color2 The second color
      * @param t The interpolation amount (between 0 and 1)

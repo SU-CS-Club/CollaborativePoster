@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * 
+ * Creates a RGB gradient
  *
  * @author Matthew Volkin
  */

@@ -20,4 +20,9 @@ public class ColorUtils {
     public static float getBrightness(Color c) {
         return Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[2];
     }
+
+    public static Color setBrightness(Color c, float f) {
+        float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
+        return new Color(Color.HSBtoRGB(hsb[0], hsb[1], f));
+    }
 }

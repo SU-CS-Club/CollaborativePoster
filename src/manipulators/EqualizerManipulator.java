@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class EqualizerManipulator extends Manipulator{
     private static final int BAR_COUNT = 8;
-    private static final int BLUR_RADIUS = 3;
+    private static final float BLUR_RADIUS_PROPORTION = 0.025f;
 
     private static float toFloat(int value) {
         return value / 255.0f;
@@ -30,7 +30,7 @@ public class EqualizerManipulator extends Manipulator{
     }
     private static Color screen(Color color1, float brightness) {
         float[] rgb = color1.getRGBComponents(null);
-        return new Color(1.0f-(1.0f-rgb[0])*(brightness), 1.0f-(1.0f-rgb[1])*(brightness), 1.0f-(1.0f-rgb[2])*(brightness));
+        return new Color(1.0f-(1.0f-rgb[0])*(1.0f-brightness), 1.0f-(1.0f-rgb[1])*(1.0f-brightness), 1.0f-(1.0f-rgb[2])*(1.0f-brightness));
     }
 
     @Override
@@ -69,14 +69,24 @@ public class EqualizerManipulator extends Manipulator{
             for (int y = 0; y < inputImage.getHeight(); y++) {
                 // Get color at source image position
                 Color sourceColor = new Color(inputImage.getRGB(x, y));
-                // Get source color's brightness
-                float sourceBrightness = ColorUtils.getBrightness(sourceColor);
+                // Get and invert source color's brightness
+                float sourceBrightness = 1.0f-ColorUtils.getBrightness(sourceColor);
                 // Get corresponding background color
                 Color resultColor = getColorAtPoint(barNumber, y+heightOffset, sourceBrightness, random);
                 // Draw horizontal black lines at specific intervals
                 if (y % (inputImage.getHeight()/(BAR_COUNT*2)) == 0) resultColor = ColorUtils.setBrightness(resultColor, 0.0f);
                 // Apply logo using screen filter
                 resultColor = screen(resultColor, sourceBrightness);
+                // Apply glow using screen filter
+                float cumulativeBrightness = 0.0f;
+                int adjustedBlurRadius = (int)(BLUR_RADIUS_PROPORTION*image.getWidth());
+                for (int x2 = x-adjustedBlurRadius; x2 <= x+adjustedBlurRadius; x2++) {
+                    for (int y2 = y-adjustedBlurRadius; y2 <= y+adjustedBlurRadius; y2++) {
+                        if (x2 >= 0 && x2 < inputImage.getWidth() && y2 >= 0 && y2 < inputImage.getHeight())
+                            cumulativeBrightness += (1.0f-ColorUtils.getBrightness(new Color(inputImage.getRGB(x2, y2)))) / Math.pow(2*adjustedBlurRadius+1, 2);
+                    }
+                }
+                resultColor = screen(resultColor, cumulativeBrightness);
                 // Set modified image's pixel to the output of this Manipulator's getColorAtPoint method
                 modified.setRGB(x, y, resultColor.getRGB());
             }

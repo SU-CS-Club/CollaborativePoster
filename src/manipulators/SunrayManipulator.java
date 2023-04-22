@@ -1,11 +1,8 @@
 package manipulators;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import util.ColorUtils;
 
 /**
  * Manipulator that adds a sunray effect
@@ -28,16 +25,23 @@ public class SunrayManipulator extends Manipulator {
         float newBrightness = (float) (brightness * (1 - normalizedDistance - sunrayFactor));
 
         Color sourceColor = new Color (image.getRGB(x, y));
-        Color adjustedColor = ColorUtils.setBrightness(sourceColor, newBrightness);
-        Color sunrayColor = new Color (255, 235, 0);
+        Color backgroundColor = new Color(255, 255, 0);
+        // Color adjustedColor = ColorUtils.setBrightness(sourceColor, newBrightness);
+        Color sunrayColor = new Color (255, 170, 51);
 
         float blendFactor = sunrayFactor;
+        float backgroundBlendFactor = 0.4f;
 
-        int red = (int) (sourceColor.getRed() * (1 - blendFactor) + sunrayColor.getRed() * blendFactor);
-        int green = (int) (sourceColor.getGreen() * (1 - blendFactor) + sunrayColor.getGreen() * blendFactor);
-        int blue = (int) (sourceColor.getBlue() * (1 - blendFactor) + sunrayColor.getBlue() * blendFactor);
-        
-        return new Color(red, green, blue);
+        int red = (int) (sourceColor.getRed() * (1 - blendFactor - backgroundBlendFactor) + sunrayColor.getRed() * blendFactor + backgroundColor.getRed() * backgroundBlendFactor);
+        int green = (int) (sourceColor.getGreen() * (1 - blendFactor - backgroundBlendFactor) + sunrayColor.getGreen() * blendFactor + backgroundColor.getGreen() * backgroundBlendFactor);
+        int blue = (int) (sourceColor.getBlue() * (1 - blendFactor - backgroundBlendFactor) + sunrayColor.getBlue() * blendFactor + backgroundColor.getBlue() * backgroundBlendFactor);
+                
+        return new Color(
+            Math.max(0, Math.min(255, red)),
+            Math.max(0, Math.min(255, green)),
+            Math.max(0, Math.min(255, blue)
+        ));
+
     }
 
     public BufferedImage transformImage(BufferedImage inputImage, Random random) {

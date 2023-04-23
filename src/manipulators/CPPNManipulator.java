@@ -15,6 +15,17 @@ import picbreeder.Tuple2D;
 import picbreeder.activationfunctions.FullLinearPiecewiseFunction;
 import picbreeder.activationfunctions.HalfLinearPiecewiseFunction;
 
+/**
+ * This borrows a lot of code from the MM-NEAT repository (though it is hastily and sloppily copied with lots
+ * of unneeded code commented out): https://github.com/schrum2/MM-NEAT
+ * 
+ * It creates a random Compositional Pattern Producing Network. Specifically, it makes a simple random starting
+ * network and mutates it 100 times to create random structure. The inputs to the network are pixel coordinates.
+ * The outputs are Hue, Saturation, and Brightness values of a color to be rendered at a particular pixel.
+ * 
+ * @author Jacob Schrum
+ *
+ */
 public class CPPNManipulator extends Manipulator {
 
 	public static final int HUE_INDEX = 0;
@@ -25,13 +36,14 @@ public class CPPNManipulator extends Manipulator {
 	public static final double SQRT2 = Math.sqrt(2); // Used for scaling distance from center	
 	private static final int NUM_MUTATIONS = 100;
 	
+	// At initialization, before construction
 	static {
 		ActivationFunctions.resetFunctionSet();
 		EvolutionaryHistory.initArchetype(0, "NONE");
 	}
 	
 	private TWEANN tweann;
-	private boolean lockTWEANN;
+	private boolean lockTWEANN; // Prevent the TWEANN from changing
 
 	public CPPNManipulator() {
 		tweann = null; // Will generate when image is generated
@@ -39,7 +51,8 @@ public class CPPNManipulator extends Manipulator {
 	}
 
 	/**
-	 * @param mutations
+	 * Generate random TWEANN from a given number of mutations
+	 * @param mutations Number of mutations to the genotype
 	 */
 	private static TWEANN randomTWEANN(int mutations) {
 		// Generate random CPPN through several mutations
@@ -52,7 +65,11 @@ public class CPPNManipulator extends Manipulator {
 		return tg.getPhenotype();
 	}
 	
-	public CPPNManipulator(TWEANN tweann) {
+	/**
+	 * Can be called by descendants to lock in a specific TWEANN
+	 * @param tweann Specific TWEANN to use at CPPN
+	 */
+	protected CPPNManipulator(TWEANN tweann) {
 		this.tweann = tweann;
 		this.lockTWEANN = true;
 	}
@@ -66,6 +83,7 @@ public class CPPNManipulator extends Manipulator {
 		return super.transformImage(inputImage, random);
 	}
 	
+	// A lot of the code below comes from MM-NEAT
 	
 	@Override
 	public Color getColorAtPoint(int x, int y, float brightness, Random random) {

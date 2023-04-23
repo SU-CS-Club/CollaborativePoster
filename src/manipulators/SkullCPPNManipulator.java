@@ -64,12 +64,12 @@ public class SkullCPPNManipulator extends CPPNManipulator {
         NodeList nList = doc.getElementsByTagName("node");
         for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
-            System.out.println("\nCurrent Element :" + nNode.getNodeName() + ":" + nNode.getAttributes().getNamedItem("type").getNodeValue());
+            //System.out.println("\nCurrent Element :" + nNode.getNodeName() + ":" + nNode.getAttributes().getNamedItem("type").getNodeValue());
             String type = nNode.getAttributes().getNamedItem("type").getNodeValue();
             NodeList subList = nNode.getChildNodes();
             long innovation = Long.parseLong(subList.item(1).getAttributes().getNamedItem("id").getNodeValue());
             String activation = subList.item(3).getFirstChild().getNodeValue();
-            System.out.println(type + ":" + innovation + ":" + activation);
+            //System.out.println(type + ":" + innovation + ":" + activation);
             if(type.equals("in")) {
             	NodeGene n = tg.nodes.get(inputs++);
             	n.innovation = innovation;
@@ -77,7 +77,7 @@ public class SkullCPPNManipulator extends CPPNManipulator {
             } else if(type.equals("hidden")) {
             	NodeGene newGene = TWEANNGenotype.newNodeGene(getFType(activation), TWEANN.Node.NTYPE_HIDDEN, innovation);
             	// Adding the gene here may not be the right order
-            	System.out.println("Adding "+activation+":hidden:"+innovation+ " at "+tg.outputStartIndex());
+            	//System.out.println("Adding "+activation+":hidden:"+innovation+ " at "+tg.outputStartIndex());
             	tg.nodes.add(tg.outputStartIndex(), newGene);
             } else if(type.equals("out")) {
             	String label = nNode.getAttributes().getNamedItem("label").getNodeValue();

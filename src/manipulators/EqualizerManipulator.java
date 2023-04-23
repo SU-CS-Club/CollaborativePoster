@@ -64,7 +64,7 @@ public class EqualizerManipulator extends Manipulator{
             // If bar number changed, randomize new height offset
             if (barNumber > prevBarNumber) {
                 prevBarNumber++;
-                heightOffset = random.nextInt(-inputImage.getHeight()/4, inputImage.getHeight()/4);
+                heightOffset = random.nextInt(inputImage.getHeight()/2)-(inputImage.getHeight()/4);
             }
             for (int y = 0; y < inputImage.getHeight(); y++) {
                 // Get color at source image position

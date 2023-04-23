@@ -35,7 +35,6 @@ public class SkullCPPNManipulator extends CPPNManipulator {
 		} catch (SAXException e) {
 			throw new IllegalStateException("loading Skull led to SAXException");
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new IllegalStateException("loading Skull led to IOException");
 		}
 		return result;

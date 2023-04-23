@@ -1,12 +1,14 @@
 package manipulators;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import picbreeder.ActivationFunctions;
 import picbreeder.CartesianGeometricUtilities;
 import picbreeder.EvolutionaryHistory;
 import picbreeder.ILocated2D;
+import picbreeder.RandomNumbers;
 import picbreeder.TWEANN;
 import picbreeder.TWEANNGenotype;
 import picbreeder.Tuple2D;
@@ -21,6 +23,7 @@ public class CPPNManipulator extends Manipulator {
 	public static final int NUM_HSB = 3;
 	public static final double BIAS = 1.0;// a common input used in neural networks
 	public static final double SQRT2 = Math.sqrt(2); // Used for scaling distance from center	
+	private static final int NUM_MUTATIONS = 100;
 	
 	static {
 		ActivationFunctions.resetFunctionSet();
@@ -28,9 +31,11 @@ public class CPPNManipulator extends Manipulator {
 	}
 	
 	private TWEANN tweann;
+	private boolean lockTWEANN;
 
 	public CPPNManipulator() {
-		this(randomTWEANN(50));
+		tweann = null; // Will generate when image is generated
+		lockTWEANN = false;
 	}
 
 	/**
@@ -39,9 +44,9 @@ public class CPPNManipulator extends Manipulator {
 	private static TWEANN randomTWEANN(int mutations) {
 		// Generate random CPPN through several mutations
 		TWEANNGenotype tg = new TWEANNGenotype();
-		System.out.println(tg);
+		//System.out.println(tg);
 		for(int i = 0; i < mutations; i++) {
-			System.out.println("mutation "+i);
+			//System.out.println("mutation "+i);
 			tg.mutate();
 		}
 		return tg.getPhenotype();
@@ -49,11 +54,22 @@ public class CPPNManipulator extends Manipulator {
 	
 	public CPPNManipulator(TWEANN tweann) {
 		this.tweann = tweann;
+		this.lockTWEANN = true;
 	}
+	
+	public BufferedImage transformImage(BufferedImage inputImage, Random random) {
+		if(!lockTWEANN) {
+			RandomNumbers.randomGenerator = random; // The RandomNumbers.randomGenerator is used by CPPNs
+			// Random TWEANN each time
+			tweann = randomTWEANN(NUM_MUTATIONS);
+		}
+		return super.transformImage(inputImage, random);
+	}
+	
 	
 	@Override
 	public Color getColorAtPoint(int x, int y, float brightness, Random random) {
-		float[] hsb = getHSBFromCPPN(tweann, x, y, image.getWidth(), image.getHeight(), 0, 1.0, 0.0, 0.0, 0.0);
+		float[] hsb = getHSBFromCPPN(tweann, x, y, image.getWidth(), image.getHeight(), brightness, 1.0, 0.0, 0.0, 0.0);
 		//System.out.println(Arrays.toString(hsb));
 //		maxB = Math.max(maxB, hsb[BRIGHTNESS_INDEX]);
 //		minB = Math.min(minB, hsb[BRIGHTNESS_INDEX]);
@@ -62,7 +78,7 @@ public class CPPNManipulator extends Manipulator {
 //			// set back to RGB to draw picture to JFrame
 //			image.setRGB(x, y, childColor.getRGB());
 //		} else { // Original Picbreeder color encoding
-			Color childColor = Color.getHSBColor(hsb[HUE_INDEX], hsb[SATURATION_INDEX], hsb[BRIGHTNESS_INDEX]);
+			Color childColor = Color.getHSBColor(hsb[HUE_INDEX], hsb[SATURATION_INDEX], Math.min(brightness,hsb[BRIGHTNESS_INDEX]));
 			// set back to RGB to draw picture to JFrame
 			return childColor;
 //			image.setRGB(x, y, childColor.getRGB());

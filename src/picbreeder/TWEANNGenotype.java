@@ -723,13 +723,13 @@ public class TWEANNGenotype {
 //			new FullyConnectedModuleMutation().go(this, sb);
 //		}
 		// Standard NEAT mutations
-		int chance = 0;
+//		int chance = 0;
 //		do {
 			//new SpliceNeuronMutation().go(this, sb);
 			spliceMutation();
 			//new NewLinkMutation().go(this, sb);
 			linkMutation();
-			chance++;
+//			chance++;
 //		} while (CommonConstants.mutationChancePerMode && chance < this.numModules);
 
 //		if (CommonConstants.polynomialWeightMutation) {
@@ -1046,7 +1046,7 @@ public class TWEANNGenotype {
 	 * @param weight the weight of the added link
 	 */
 	public void linkMutation(long source, double weight) {
-		long target = getRandomAlterableConnectedNodeInnovationNumber(source, false);
+		long target = getRandomAlterableConnectedNodeInnovationNumber(source, true);
 		long link = EvolutionaryHistory.nextInnovation();
 		addLink(source, target, weight, link);
 	}
@@ -1081,6 +1081,7 @@ public class TWEANNGenotype {
 	 * @return innovation number of chosen random node (under restrictions)
 	 */
 	private long getRandomAlterableConnectedNodeInnovationNumber(long source, boolean includeInputs) {
+		//System.out.println("TRYNING SOURCE: "+source);
 		int sourceIndex = indexOfNodeInnovation(source);
 		assert sourceIndex != -1 : "Could not find source innovation: " + sourceIndex + "\n" + this;
 		// Use of set prevents duplicates, insuring fair random choice
@@ -1107,6 +1108,10 @@ public class TWEANNGenotype {
 			}
 		}
 		if (sourceInnovationNumbers.isEmpty()) {
+			
+			//System.out.println("EMPTY!");
+			return source;
+			
 //			if (Parameters.parameters.booleanParameter("prefFreezeUnalterable")) {
 //				new MeltThenFreezePreferenceMutation().mutate(this);
 //				// try again
@@ -1117,17 +1122,17 @@ public class TWEANNGenotype {
 //				return getRandomAlterableConnectedNodeInnovationNumber(source, includeInputs);
 //			} else {
 				// Small possibility with module deletion: fix
-				System.out.println("No nodes are both connected and alterable!");
-				System.out.println("There should be unfrozen outputs");
-				System.out.println("Outputs: " + numOut);
-				for (NodeGene ng : nodes) {
-					if (ng.ntype == TWEANN.Node.NTYPE_OUTPUT) {
-						System.out.print(ng + ", ");
-					}
-				}
-				System.out.println();
-				new NullPointerException().printStackTrace();
-				System.exit(1);
+//				System.out.println("No nodes are both connected and alterable!");
+//				System.out.println("There should be unfrozen outputs");
+//				System.out.println("Outputs: " + numOut);
+//				for (NodeGene ng : nodes) {
+//					if (ng.ntype == TWEANN.Node.NTYPE_OUTPUT) {
+//						System.out.print(ng + ", ");
+//					}
+//				}
+//				System.out.println();
+//				new NullPointerException().printStackTrace();
+//				System.exit(1);
 //			}
 		}
 		Long[] options = new Long[sourceInnovationNumbers.size()];

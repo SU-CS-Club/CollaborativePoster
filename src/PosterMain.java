@@ -51,11 +51,13 @@ public class PosterMain {
                 if (Modifier.isAbstract(targetClass.getModifiers())) {
                     System.out.printf("Skipped abstract \"%s\"\n", classname);
                 } else {
-                    manipulators.add((Manipulator) targetClass.getConstructors()[0].newInstance());
+                    manipulators.add((Manipulator) targetClass.getConstructor().newInstance());
                     System.out.printf("Added \"%s\"\n", classname);
                 }
             } catch (Exception e) {
                 System.out.printf("Failed to add \"%s\"\n", classname);
+                e.printStackTrace();
+                System.exit(1);
             }
         }
 

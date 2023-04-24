@@ -113,7 +113,7 @@ public class PreviewPanel extends JPanel {
             rightPanel.add(sizePanel);
 
             JPanel manipulatorPanel = new JPanel();
-            manipulatorPanel.setPreferredSize(new Dimension(300, Math.max(610, manipulators.length*20)));
+            manipulatorPanel.setPreferredSize(new Dimension(300, Math.max(610, manipulators.length*25)));
             {
                 for (int i = 0; i < manipulators.length; i++) {
                     JCheckBoxMenuItem item = new JCheckBoxMenuItem(manipulators[i].toString());

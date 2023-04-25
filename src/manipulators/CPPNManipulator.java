@@ -34,7 +34,7 @@ public class CPPNManipulator extends Manipulator {
 	public static final int NUM_HSB = 3;
 	public static final double BIAS = 1.0;// a common input used in neural networks
 	public static final double SQRT2 = Math.sqrt(2); // Used for scaling distance from center	
-	private static final int NUM_MUTATIONS = 100;
+	private static final int NUM_MUTATIONS = 20;
 	
 	// At initialization, before construction
 	static {
@@ -87,6 +87,12 @@ public class CPPNManipulator extends Manipulator {
 	
 	@Override
 	public Color getColorAtPoint(int x, int y, float brightness, Random random) {
+		
+		if(brightness == 0) {
+			// The source image has something that should be visible, but the CPPN image could be all black too. Random black or white
+			return random.nextDouble() > 0.5 ? Color.BLACK : Color.WHITE;
+		}
+		
 		float[] hsb = getHSBFromCPPN(tweann, x, y, image.getWidth(), image.getHeight(), brightness, 1.0, 0.0, 0.0, 0.0);
 		//System.out.println(Arrays.toString(hsb));
 //		maxB = Math.max(maxB, hsb[BRIGHTNESS_INDEX]);
@@ -96,7 +102,7 @@ public class CPPNManipulator extends Manipulator {
 //			// set back to RGB to draw picture to JFrame
 //			image.setRGB(x, y, childColor.getRGB());
 //		} else { // Original Picbreeder color encoding
-			Color childColor = Color.getHSBColor(hsb[HUE_INDEX], hsb[SATURATION_INDEX], Math.min(brightness,hsb[BRIGHTNESS_INDEX]));
+			Color childColor = Color.getHSBColor(hsb[HUE_INDEX], hsb[SATURATION_INDEX], hsb[BRIGHTNESS_INDEX]);
 			// set back to RGB to draw picture to JFrame
 			return childColor;
 //			image.setRGB(x, y, childColor.getRGB());

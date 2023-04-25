@@ -75,8 +75,8 @@ public class ImageUtil {
         try {
             Path outputPath = Path.of("output");
             if (!Files.exists(outputPath)) Files.createDirectory(outputPath);
-            File outputFile = new File("output/poster_output "+getFileSafeDate()+".jpg");
-            ImageIO.write(image, "jpg", outputFile);
+            File outputFile = new File("output/poster_output "+getFileSafeDate()+".png");
+            ImageIO.write(image, "png", outputFile);
         } catch (IOException ignored) {
             System.out.println(ignored);
         }

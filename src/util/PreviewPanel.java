@@ -221,8 +221,9 @@ public class PreviewPanel extends JPanel {
         for (int i = 0; i < leftover; i++) {
             arranged[total-1-i] = new CPPNManipulator();
         }
-
-        Random shuffler = new Random(); // shuffle manipulators
+        int seed = new Random().nextInt(1000);
+        System.out.println(seed);
+        Random shuffler = new Random(seed); // shuffle manipulators
         boolean catcher = false;
         while (!catcher) {
             try {

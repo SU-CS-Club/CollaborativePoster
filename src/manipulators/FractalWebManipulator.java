@@ -1,6 +1,11 @@
 package manipulators;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.Random;
+
+import util.ColorUtils;
 
 /**
  * Creates an instance of a multicolored fractal web
@@ -26,7 +31,7 @@ public class FractalWebManipulator extends Manipulator {
      */
     @Override
     public Color getColorAtPoint(int x, int y, float brightness, Random random) {
-        if (brightness != 0.0) {
+        if (brightness != 0.0f) {
             int width = image.getWidth();
             int height = image.getHeight();
 
@@ -73,5 +78,31 @@ public class FractalWebManipulator extends Manipulator {
             drawFractalWeb(g, x, y, radius / 2, angle + Math.PI / 4, colors, depth + 1, random);
             drawFractalWeb(g, x, y, radius / 2, angle - Math.PI / 4, colors, depth + 1, random);
         }
+    }
+    
+    // From https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
+    static BufferedImage deepCopy(BufferedImage bi) {
+    	 ColorModel cm = bi.getColorModel();
+    	 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+    	 WritableRaster raster = bi.copyData(null);
+    	 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+    
+    // Dr. Schrum: too much white and no ability to see background. Needed to fix:
+    public BufferedImage transformImage(BufferedImage inputImage, Random random) {
+    	BufferedImage copy = deepCopy(inputImage);
+    	BufferedImage modified = super.transformImage(copy, random);
+        for (int x = 0; x < inputImage.getWidth(); x++) {
+            for (int y = 0; y < inputImage.getHeight(); y++) {
+                // Get color at source image position
+                Color sourceColor = new Color(inputImage.getRGB(x, y));
+                float sourceBrightness = ColorUtils.getBrightness(sourceColor);
+                if(sourceBrightness == 0) {
+                	modified.setRGB(x, y, Color.BLACK.getRGB());
+                }
+                
+            }
+        }
+        return modified;
     }
 }

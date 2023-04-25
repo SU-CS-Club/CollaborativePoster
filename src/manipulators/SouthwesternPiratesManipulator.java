@@ -24,6 +24,9 @@ public class SouthwesternPiratesManipulator extends ImageManipulator {
 
     @Override
     public Color getColorAtPoint(int x, int y, float brightness, Random random) {
+    	
+    	if(brightness == 0) return Color.BLACK; // Added by Dr. Schrum to see background
+    	
         Color color = super.getColorAtPoint(x, y, brightness, random);
         if (color.equals(Color.WHITE)) {
             float hue = random.nextFloat();

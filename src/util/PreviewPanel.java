@@ -1,5 +1,6 @@
 package util;
 
+import manipulators.CPPNManipulator;
 import manipulators.Manipulator;
 
 import javax.imageio.ImageIO;
@@ -10,6 +11,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static util.ConfigUtil.CONFIG;
@@ -31,11 +35,14 @@ public class PreviewPanel extends JPanel {
     private final JTextField heightField;
     private final JTextField widthField;
     private final JButton saveButton;
+    private final JButton shuffleButton;
 
     private final boolean[] enabled;
+    private final float ratio;
 
     public PreviewPanel(BufferedImage sourceImage, Manipulator[] manipulators) {
         this.sourceImage = sourceImage;
+        ratio = ((float)sourceImage.getHeight())/((float)sourceImage.getWidth());
         this.enabled = new boolean[manipulators.length];
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -45,7 +52,7 @@ public class PreviewPanel extends JPanel {
         leftPanel.setPreferredSize(new Dimension(700, 700));
         {
             bigPicLabel = new JLabel();
-            bigPicLabel.setIcon(new ImageIcon(sourceImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
+            bigPicLabel.setIcon(new ImageIcon(sourceImage.getScaledInstance((int) (600/ratio), 600, Image.SCALE_SMOOTH)));
             leftPanel.add(bigPicLabel);
         }
         add(leftPanel);
@@ -109,6 +116,9 @@ public class PreviewPanel extends JPanel {
                 saveButton = new JButton("Save Image");
                 saveButton.addActionListener(e -> ImageUtil.saveOutputFile(modifiedImage));
                 sizePanel.add(saveButton);
+                shuffleButton = new JButton("Shuffle Image");
+                shuffleButton.addActionListener(e -> updateImage(manipulators));
+                sizePanel.add(shuffleButton);
             }
             rightPanel.add(sizePanel);
 
@@ -174,9 +184,9 @@ public class PreviewPanel extends JPanel {
             int width = Integer.parseInt(widthField.getText());
             modifiedImage = getPosterImagePreview(manipulators, enabled, sourceImage, height, width);
             
-            bigPicLabel.setIcon(new ImageIcon(modifiedImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
+            bigPicLabel.setIcon(new ImageIcon(modifiedImage.getScaledInstance((int) (600/ratio), 600, Image.SCALE_SMOOTH)));
         } else {
-            bigPicLabel.setIcon(new ImageIcon(sourceImage.getScaledInstance(600, 600, Image.SCALE_SMOOTH)));
+            bigPicLabel.setIcon(new ImageIcon(sourceImage.getScaledInstance((int) (600/ratio), 600, Image.SCALE_SMOOTH)));
         }
     }
 
@@ -190,20 +200,42 @@ public class PreviewPanel extends JPanel {
      * @param width Width of result
      * @return Combined poster image
      */
-	public static BufferedImage getPosterImagePreview(Manipulator[] manipulators, boolean[] enabled, BufferedImage sourceImage, int height, int width) {
-		int step = -1;
-		int filled = 0;
-		int total = height * width;
-		BufferedImage[] images = ImageUtil.splitImage(sourceImage, height, width);
+    public static BufferedImage getPosterImagePreview(Manipulator[] manipulators, boolean[] enabled, BufferedImage sourceImage, int height, int width) {
+        int total = height * width;
+        LinkedList<Manipulator> enabledManipulators = new LinkedList<>();
+        for (int i = 0; i < manipulators.length; i++) {
+            if (enabled[i])
+                enabledManipulators.add(manipulators[i]);
+        }
+        int repeats = total / enabledManipulators.size();
+        int leftover = total % enabledManipulators.size();
+        BufferedImage[] images = ImageUtil.splitImage(sourceImage, height, width);
 
-		while (filled < total) {
-		    step = (step+1)%(enabled.length);
-		    while (!enabled[step]) step = (step+1)%(enabled.length);
-		    images[filled] = manipulators[step].transformImage(images[filled], new Random());
-		    filled++;
-		}
+        Manipulator[] arranged = new Manipulator[total];
+        for (int i = 0; i < repeats; i++) {
+            int start = i * enabledManipulators.size();
+            for (int j = 0; j < enabledManipulators.size(); j++) {
+                arranged[start + j] = enabledManipulators.get(j);
+            }
+        }
+        for (int i = 0; i < leftover; i++) {
+            arranged[total-1-i] = new CPPNManipulator();
+        }
 
-		BufferedImage temp = ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
-		return temp;
-	}
+        Random shuffler = new Random(); // shuffle manipulators
+        boolean catcher = false;
+        while (!catcher) {
+            try {
+                Arrays.sort(arranged, (o1, o2) -> shuffler.nextInt(1000)-500);
+                catcher = true;
+            } catch (Exception ignored) {}
+        }
+
+
+        for (int i = 0; i < total; i++) {
+            images[i] = arranged[i].transformImage(images[i], new Random());
+        }
+
+        return ImageUtil.mergeImages(images, height, width, sourceImage.getWidth(), sourceImage.getHeight());
+    }
 }

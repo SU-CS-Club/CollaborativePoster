@@ -63,11 +63,11 @@ public class ConfigUtil {
 
     private static HashMap<String, String> defaults() {
         HashMap<String, String> data = new HashMap<>();
-        data.putIfAbsent("lastSelected", "CSClubLogoManipulator");
+        data.putIfAbsent("lastSelected", "CPPNManipulator");
         data.putIfAbsent("displayImage", "src/imagesources/test_image.png");
-        data.putIfAbsent("previewImage", "src/imagesources/su_crest.png");
-        data.putIfAbsent("previewHeight", "6");
-        data.putIfAbsent("previewWidth", "6");
+        data.putIfAbsent("previewImage", "src/imagesources/real_poster.png");
+        data.putIfAbsent("previewHeight", "12");
+        data.putIfAbsent("previewWidth", "8");
         return data;
     }
 

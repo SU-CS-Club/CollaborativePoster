@@ -90,7 +90,8 @@ public class CPPNManipulator extends Manipulator {
 		
 		if(brightness == 0) {
 			// The source image has something that should be visible, but the CPPN image could be all black too. Random black or white
-			return random.nextDouble() > 0.5 ? Color.BLACK : Color.WHITE;
+			float value = random.nextFloat();
+			return new Color(value, value, value);
 		}
 		
 		float[] hsb = getHSBFromCPPN(tweann, x, y, image.getWidth(), image.getHeight(), brightness, 1.0, 0.0, 0.0, 0.0);
